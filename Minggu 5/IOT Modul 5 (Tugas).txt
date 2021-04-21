@@ -1,0 +1,79 @@
+#include <DHT.h> //library DHT
+#define DHTPIN 8 //pin DATA konek ke pin 2 Arduino
+#define DHTTYPE DHT11 //tipe sensor DHT11
+DHT dht(DHTPIN, DHTTYPE); //set sensor + koneksi pin
+ 
+float humi, temp, fah;//deklarasi variabel 
+int blue = 7;
+int green = 6;
+int yellow =5;
+int red = 4;
+
+
+ 
+void setup()
+{
+  Serial.begin(9600); //set baud 9600
+  delay(10);
+  pinMode(red, OUTPUT);
+  pinMode(yellow, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(blue, OUTPUT); 
+}
+ 
+void loop()
+{
+  humi = dht.readHumidity();//baca kelembaban
+  temp = dht.readTemperature();//baca suhu
+  fah = (temp * 9/5)+32;
+
+  Serial.print("Suhu=");  //kirim serial "Suhu"
+  Serial.print(temp);     //kirim serial nilai suhu
+  Serial.println("C");    //kirim serial "C" Celcius
+
+  //Kondisi Sangat Panas
+  if(temp>=20) {
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, LOW);
+    digitalWrite(yellow, HIGH);
+    digitalWrite(green, LOW);
+    
+  }
+  //Kondisi Panas
+  if(temp>15 && temp<=20 )
+  digitalWrite(red, HIGH);
+   digitalWrite(blue, LOW);
+    digitalWrite(yellow, LOW);
+    digitalWrite(green, LOW);
+
+  //Kondisi Normal  
+  if(temp==15)
+   digitalWrite(red, LOW);
+   digitalWrite(blue, LOW);
+   digitalWrite(yellow, HIGH);
+   digitalWrite(green, LOW);
+
+  //Kondisi Dingin
+  if(temp<=14 && temp>=10)
+      digitalWrite(red, LOW);
+   digitalWrite(blue, LOW);
+    digitalWrite(yellow, LOW);
+    digitalWrite(green, HIGH);
+
+  //Kondisi Sangat Dingin
+  if(temp<14){
+  digitalWrite(red, LOW);
+   digitalWrite(blue, HIGH);
+    digitalWrite(yellow, LOW);
+    digitalWrite(green, HIGH);
+  }
+ 
+  Serial.print("Fahrenheit =");  //kirim serial "Suhu"
+  Serial.print(fah);     //kirim serial nilai suhu
+  Serial.println("F");    //kirim serial "F" Fahrenheit 
+  //Serial.print("Humi=");  //kirim serial "Humi"
+  //Serial.print(humi);     //kirim serial nilai kelembaban
+  //Serial.println("%RH");  //kirim serial "%RH"
+  
+  delay(1000);            //tunda 1 detik untuk pembacaan berikutnya
+}
