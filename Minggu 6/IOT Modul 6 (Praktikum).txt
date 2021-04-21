@@ -1,0 +1,17 @@
+#define SensorLDR 15
+
+int nilaiSensor;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  Serial.println("Contoh penggunaan Sensor LDR");
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  nilaiSensor = analogRead(SensorLDR);
+  Serial.print("Nilai Sensor: ");
+  Serial.println(nilaiSensor);
+  delay(1000);
+}

@@ -1,0 +1,52 @@
+#include <DHT.h>
+
+#define DHTPIN 7
+#define DHTTYPE DHT11
+#define SensorLDR 15
+#define LED 3
+#define LED2 4
+
+DHT dht(DHTPIN, DHTTYPE);
+int nilaiSensor;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(LED, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  Serial.println("Tugas Modul 6");
+  dht.begin();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  nilaiSensor = analogRead(SensorLDR);
+  float humidity_1 = dht.readHumidity();
+  float temperature_1 = dht.readTemperature();
+
+  Serial.print("Suhu = ");
+  Serial.print(temperature_1);
+  Serial.print(" C\t");
+  Serial.print("Cahaya = ");
+  Serial.print(nilaiSensor);
+  Serial.println("");
+
+  if(temperature_1 >= 30 && nilaiSensor <= 300){
+    Serial.print("Suhu Tinggi");
+    for(int x=0; x<3; x++){
+      digitalWrite(LED, HIGH);
+      delay(500);
+      digitalWrite(LED, LOW);
+      delay(500); 
+    }
+  }else if(temperature_1 <30 && nilaiSensor > 500) {
+    Serial.print("Suhu Rendah");
+    for(int x=0; x<3; x++){
+      digitalWrite(LED2, HIGH);
+      delay(500);
+      digitalWrite(LED2, LOW);
+      delay(500);
+    }
+  }
+  delay(1000);
+}
